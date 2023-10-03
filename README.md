@@ -1,2 +1,2 @@
-# algorithem
-introduction algorithems v3
+# algorithm
+introduction algorithms v3

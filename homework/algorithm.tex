@@ -1,0 +1,242 @@
+\documentclass{article}
+\title{Algorithm Homework}
+\author{Tai Jiang}
+\date{October 2023}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{color}
+\renewcommand\lstlistingname{Quelltext}
+\lstset{ % General setup for the package
+    language=Python,
+    basicstyle=\small\sffamily,
+    numbers=left,
+    numberstyle=\tiny,
+    frame=tb,
+    tabsize=2,
+    columns=fixed,
+    showstringspaces=false,
+    showtabs=false,
+    keepspaces,
+    commentstyle=\color{red},
+    keywordstyle=\color{blue}
+}
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \pagenumbering{gobble}
+  \newpage
+  \pagenumbering{arabic}
+  \section{Show that the solution of  $ T \left(n\right) = T \left(\left\lceil n/2 \right\rceil\right) + 1  $ is $ O \left( \lg n \right)  $ .}
+    \paragraph{Origin}:
+      \subparagraph{Exercise}4.3-2
+      \subparagraph{Page}87
+    \paragraph{Answer}:
+
+  That can build a recursion tree to visualize how this recurrence works:
+
+  \begin{enumerate}
+    \item Start with $ T \left(n\right) $ at the top.
+    \item At each level of the tree, we have $ T \left( \left\lceil n/2 \right\rceil \right) + 1 $.
+    \item The tree branches into two subproblems, one with size $ \left\lceil n/2 \right\rceil $ and another with size $ \left\lceil n/2 \right\rceil $.
+  \end{enumerate}
+
+  The tree might look like Figure \ref{fig:tree1}.
+
+  \begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}
+      [level distance=50px,
+       level 1/.style={sibling distance=160px},
+       level 2/.style={sibling distance=80px},
+       level 3/.style={sibling distance=50px}]
+      \node {$ T \left(\left\lceil n \right\rceil\right) $}
+        child {node {$ T \left(\left\lceil n/2 \right\rceil\right) $}
+          child {node {$ T \left(\left\lceil  \left(\left\lceil n/2 \right\rceil\right) /2 \right\rceil\right) $}
+            child {node {...}}
+            child {node {...}}
+          }
+          child {node {$ T \left(\left\lceil  \left(\left\lceil n/2 \right\rceil\right) /2 \right\rceil\right) $}
+            child {node {...}}
+            child {node {...}}
+          }
+        }
+        child {node {$ T \left(\left\lceil n/2 \right\rceil\right) $}
+          child {node {$ T \left(\left\lceil  \left(\left\lceil n/2 \right\rceil\right) /2 \right\rceil\right) $}
+            child {node {...}}
+            child {node {...}}
+          }
+          child {node {$ T \left(\left\lceil  \left(\left\lceil n/2 \right\rceil\right) /2 \right\rceil\right) $}
+            child {node {...}}
+            child {node {...}}
+          }
+        };
+    \end{tikzpicture}
+    \caption{Recursion Tree.}
+    \label{fig:tree1}
+  \end{figure}
+
+  At each level, the size of the problem is divided by 2, and we keep going until the size becomes 1 (or less, in which case we stop). The depth of the tree will be the number of times we can halve n until it becomes 1. So it's the number of times we can take $ \left\lceil n/2 \right\rceil $ until $ \left\lceil n/2 \right\rceil \leq  1 $.
+  
+  At each step, we're taking the ceiling of half of the previous value, which is effectively dividing it by 2. We continue this process until the value is less than or equal to 1. So, let k be the number of steps it takes for $ \left\lceil n/2 \right\rceil $ to become 1, look like equation \eqref{eq:tree1}.
+
+  \begin{equation}
+    \frac{\left\lceil n/2 \right\rceil}{2^k}  \leq 1
+    \label{eq:tree1}
+  \end{equation}
+
+  Then sovle for k, look like equation \eqref{eq:tree2}:
+  
+  \begin{equation}
+    \begin{aligned}
+      \frac{n}{2^k} \leq 1 \\
+      n \leq 2^k \\
+      \lg n \leq k
+    \end{aligned}
+    \label{eq:tree2}
+  \end{equation}
+
+  The depth of the recursion tree is $ O(\lg n) $, which means the algorithm has a time complexity of $ O(\lg n) $. So the solution of  $ T \left(n\right) = T \left(\left\lceil n/2 \right\rceil\right) + 1 $ is indeed $ O(\lg n) $.
+
+  \section{Use a recursion tree to determine a good asymptotic upper bound on the recurrence $ T \left(n\right) = 4T \left( n/2 + 2 \right) + n  $. Use the substitution method to verify your answer.}
+    \paragraph{Origin}:
+      \subparagraph{Exercise}4.4-3
+      \subparagraph{Page}93
+    \paragraph{Answer}:
+
+    That can build a recursion tree to visualize how this recurrence works:
+
+    \begin{enumerate}
+      \item Start with $ T \left(n\right)  $ at the top.
+      \item At each level of the tree, we have 4 subproblems of size $ T \left( n/2 + 2 \right) + n  $.
+      \item The cost of each level is n.
+    \end{enumerate}
+
+    The tree might look like Figure \ref{fig:tree2}.
+
+  \begin{figure}[h!]
+    \centering
+    \begin{tikzpicture}[sibling distance=50px]
+      \node {T(n)}
+        child {node {T(n/2+2)}
+          child {node {n}}
+        }
+        child {node {T(n/2+2)}
+          child {node {n}}
+        }
+        child {node {T(n/2+2)}
+          child {node {n}}
+        }
+        child {node {T(n/2+2)}
+          child {node {n}}
+        };
+
+    \end{tikzpicture}
+    \caption{Recursion Tree.}
+    \label{fig:tree2}
+  \end{figure}
+
+  At each level, we have 4 subproblems of size T(n/2 + 2), and each subproblem incurs a cost of n. The number of levels in the tree will depend on how quickly the subproblem size decreases.
+
+  The subproblem size is equation \eqref{eq:q2_1}:
+
+  \begin{equation}
+    T(n) = 4T(n/2 + 2) + n
+    \label{eq:q2_1}
+  \end{equation}
+
+  The subproblem size is n/2 + 2, so we calculate the subproblem size for the next level by equation \eqref{eq:q2_2}:
+  \begin{equation}
+    \begin{aligned}
+      T(n/2 + 2) &= 4T((n/2 + 2)/2 + 2) + n/2 + 2 \\
+      &= 4T(n/4 + 1 + 2) + n/2 + 2 \\
+      &= 4T(n/4 + 3) + n/2 + 2      
+    \end{aligned}
+    \label{eq:q2_2}
+  \end{equation}
+
+  At each level, we are adding 2 to the subproblem size. Therefore, at level k, the subproblem size will be $ n/(2^k) + 2k $.
+
+  Now, we want to find the level where the subproblem size becomes a constant, $ n/(2^k) + 2k = C for some constant C $, calculate the k look like equation \eqref{eq:q2_3}.
+
+  \begin{equation}
+    \begin{aligned}
+      n/(2^k) + 2k &= C \\
+      n/(2^k) &= C - 2k \\
+      2^k &= n/(C - 2k) \\
+      k &= \lg (n/(C - 2k))
+    \end{aligned}
+    \label{eq:q2_3}
+  \end{equation}
+
+  C is a constant. The number of levels in the recursion tree is $ O(\lg n) $.
+
+  The cost at each level in the recursion tree is equation \eqref{eq:q2_4}:
+
+  \begin{equation}
+    \begin{aligned}
+      \text{At level 0:}& \quad n \\
+      \text{At level 1:}& \quad 4 * n/2 = 2n \\
+      \text{At level 2:}& \quad 4 * (n/4) = n \\
+      ... \\
+      \text{At level k:}& \quad (4^k) * (n/(2^k)) = (n/2^k) * (4^k) = C * 4^k
+    \end{aligned}
+    \label{eq:q2_4}
+  \end{equation}
+
+  Summing up the costs of all levels(Equation \eqref{eq:q2_5}):
+
+  \begin{equation}
+    T(n) = n + 2n + 4n + ... + C * 4^k
+    \label{eq:q2_5}
+  \end{equation}
+
+  This is a geometric series, and its sum can be bounded by(Equation \eqref{eq:q2_6}):
+
+  \begin{equation}
+    T(n) \leq  n * (1 - 4^(k+1))/(1 - 4)
+    \label{eq:q2_6}
+  \end{equation}
+
+  Since $k = O(\lg(n))$, $4^(k+1)$ is polynomial in n. Therefore, T(n) is O(n).
+
+  verify this result using the substitution method:
+
+  Assume that $T(m) \leq  km - p$ for some positive constants k and p, where m < n(Equation \eqref{eq:q2_7}).
+
+  \begin{equation}
+    \begin{aligned}
+      T(n) = 4T(n/2 + 2) + n \\
+        \leq  4(k(n/2 + 2) - p) + n \\
+        = 2kn - 4k + 4n - 4p + n \\
+        = (2k + 5)n - 4k - 4p
+    \end{aligned}
+    \label{eq:q2_7}
+  \end{equation}
+
+  Find k and p such that $(2k + 5)n - 4k - 4p \leq  kn - p$.
+  
+  This holds if $2k + 5 \leq k and -4k - 4p \leq -p$.
+  
+  Solving these inequalities(Equation \eqref{eq:q2_8}):
+
+  \begin{equation}
+    \begin{aligned}
+      2k + 5 &\leq k \\
+      k &\leq -5 \\
+      -4k - 4p &\leq -p \\
+      -4k &\leq 0\\
+      k &\geq  0
+    \end{aligned}
+    \label{eq:q2_8}
+  \end{equation}
+
+  Since we can't find k and p that satisfy these inequalities, our initial assumption that $ T(m) \leq km - p$ for m < n is incorrect.
+
+  Therefore, T(n) is not $O(n^k)$ for any positive constant k. Instead, as shown earlier, T(n) is O(n).
+  
+  \begin{lstlisting}
+#!/usr/bin/perl
+print S(@ARGV);sub S{$r=(@_[0]%4==0&&@_[0]%100!=0)||@_[0]%400=0;}
+  \end{lstlisting}
+\end{document}
