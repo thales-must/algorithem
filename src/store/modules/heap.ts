@@ -71,7 +71,7 @@ const useHeap = defineStore({
      */
     init() {
       this._form = {
-        str: ''
+        str: '16,14,10,8,7,9,3,2,4,1'
       }
     }
     

@@ -4,23 +4,7 @@
 \date{October 2023}
 \usepackage{amsmath}
 \usepackage{tikz}
-\usepackage{listings}
 \usepackage{color}
-\renewcommand\lstlistingname{Quelltext}
-\lstset{ % General setup for the package
-    language=Python,
-    basicstyle=\small\sffamily,
-    numbers=left,
-    numberstyle=\tiny,
-    frame=tb,
-    tabsize=2,
-    columns=fixed,
-    showstringspaces=false,
-    showtabs=false,
-    keepspaces,
-    commentstyle=\color{red},
-    keywordstyle=\color{blue}
-}
 \begin{document}
   \maketitle
   \tableofcontents
@@ -242,7 +226,17 @@
     \subparagraph{Page}97
   \paragraph{Answer}:
 
-  abc
+  The master theorem can be applied to recurrence
+
+  To apply the master theorem, we need to check whether f(n) satisfies the following conditions for some constant $\epsilon  > 0$:
+
+  \begin{enumerate}
+    \item If $ f(n) = O(n^{log_{b} a - \epsilon } ) $, for some $\epsilon > 0$, then $T(n) = \Theta (n^{log_{b}a})$.
+    \item If $ f(n) = \Theta(n^{log_{b}a}) $, then $ T(n) = \Theta(n^{log_{b} a}  \lg n) $.
+    \item If $ f(n) = \Omega (n^{log_{b}a + \epsilon}) $, for some $\epsilon > 0$, and if $a f(n/b) \leq k * f(n)$ for some k < 1 and sufficiently large n, then $T(n) = \Theta(f(n))$.
+  \end{enumerate}
+
+  The asymptotic upper bound for the given recurrence relation $T(n) = 4T(n/2) + n^2 * \lg n = O(n^2)$.
 
   \section{Use indicator random variables to compute the expected value of the sum of n dice.}
 
@@ -251,7 +245,27 @@
     \subparagraph{Page}122
   \paragraph{Answer}:
 
-  abc
+Let $X_i$ be the random variable that is 1 if the i-th die shows a particular face (1, 2, 3, 4, 5, or 6), and 0 otherwise.
+
+The sum of n dice can then be expressed as the sum of these indicator variables:
+
+$ S = X_1 + X_2 + X_3 + ... + X_n $
+
+Now, we can calculate the expected value of S:
+
+$ E(S) = E(X_1) + E(X_2) + E(X_3) + ... + E(X_n) $
+
+Since each die is fair, the probability of each face (1, 2, 3, 4, 5, or 6) appearing on a single die is 1/6, and the expected value of each indicator variable is:
+
+$ E(X_i) = 1 * P(X_i = 1) + 0 * P(X_i = 0) = 1 * (1/6) + 0 * (5/6) = 1/6 $
+
+Now, you can sum up the expected values of the individual indicators:
+
+$ E(S) = E(X_1) + E(X_2) + E(X_3) + ... + E(X_n) = (1/6) + (1/6) + (1/6) + ... + (1/6) = (n/6) $
+
+So, the expected value of the sum of n dice is (n/6).
+
+
 
   \section{Use indicator random variables to solve the following problem, which is known as the hat-check problem. Each of n customers gives a hat to a hat-check person at a restaurant. The hat-check person gives the hats back to the customers in a random order. What is the expected number of customers who get back their own hat?}
 
@@ -260,11 +274,34 @@
     \subparagraph{Page}122
   \paragraph{Answer}:
 
-  abc
+  Let $X_i$ be an indicator random variable for the i-th customer, where:
+
+  $X_i = 1$ if the i-th customer gets their own hat back.
+  $X_i = 0$ if the i-th customer does not get their own hat back.
+  
+  The probability that the i-th customer gets their own hat back is 1/n, as there are n hats and they are returned in a random order. Therefore, we have:
+  
+  $E(X_i) = P(X_i = 1) = 1/n$
+  
+  Now, let's define a random variable Y as the total number of customers who get their own hat back. Y is the sum of the indicator random variables for each customer:
+  
+  $Y = X_1 + X_2 + X_3 + ... + X_n$
+  
+  Now, we can find the expected value of Y using linearity of expectation:
+  
+  $E(Y) = E(X_1 + X_2 + X_3 + ... + X_n)$
+  
+  Using the linearity of expectation, we can write this as:
+  
+  $E(Y) = E(X_1) + E(X_2) + E(X_3) + ... + E(X_n)$
+  
+  Since each customer's indicator random variable has the same expected value (1/n), we can simplify further:
+  
+  $E(Y) = (1/n) + (1/n) + (1/n) + ... + (1/n) (n times)$
+  
+  $E(Y) = (1/n) * n = 1$
+  
+  So, the expected number of customers who get back their own hat is 1. This result may be surprising, but it's a classic result of the hat-check problem. On average, one customer is expected to get their own hat back, while the others get hats belonging to other customers.
 
 
-  \begin{lstlisting}
-#!/usr/bin/perl
-print S(@ARGV);sub S{$r=(@_[0]%4==0&&@_[0]%100!=0)||@_[0]%400=0;}
-  \end{lstlisting}
 \end{document}
