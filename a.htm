@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Heap Sort Tree Visualization</title>
+    <style>
+      circle {
+        fill: steelblue;
+        stroke: black;
+        stroke-width: 2;
+      }
+      text {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        text-anchor: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="600" height="400" id="heapSortTree"></svg>
+
+    <script>
+      const heap = [4, 10, 3, 5, 1]; // Input array
+
+      // Create an SVG container
+      const svg = document.getElementById('heapSortTree');
+
+      // Function to draw a binary tree
+      function drawTree(arr, index, x, y, xOffset) {
+        if (index < arr.length) {
+          // Draw circle for the current element
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', x);
+          circle.setAttribute('cy', y);
+          circle.setAttribute('r', 20);
+          svg.appendChild(circle);
+
+          // Label the circle with the element's value
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', x);
+          text.setAttribute('y', y + 5);
+          text.textContent = arr[index];
+          svg.appendChild(text);
+
+          // Calculate positions for left and right child nodes
+          const leftX = x - xOffset;
+          const rightX = x + xOffset;
+          const childY = y + 60;
+
+          // Draw left child and edge
+          drawTree(arr, 2 * index + 1, leftX, childY, xOffset / 2);
+          const leftLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          leftLine.setAttribute('x1', x);
+          leftLine.setAttribute('y1', y + 20);
+          leftLine.setAttribute('x2', leftX);
+          leftLine.setAttribute('y2', childY - 20);
+          svg.appendChild(leftLine);
+
+          // Draw right child and edge
+          drawTree(arr, 2 * index + 2, rightX, childY, xOffset / 2);
+          const rightLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          rightLine.setAttribute('x1', x);
+          rightLine.setAttribute('y1', y + 20);
+          rightLine.setAttribute('x2', rightX);
+          rightLine.setAttribute('y2', childY - 20);
+          svg.appendChild(rightLine);
+        }
+      }
+
+      // Start drawing the tree
+      drawTree(heap, 0, 300, 50, 150);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,210 @@
+@import "./mixin";
+ 
+.layout {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  > header {
+    div.header {
+      position: sticky;
+      z-index: 10;
+      left: 0;
+      right: 0;
+      top: 0;
+      h1 {
+        color: #FFF;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+      nav {
+        ul {
+          @include purity;
+          li {
+            padding: 0 0.5em;
+            position: relative;
+            display: flex;
+            align-items: center;
+            .nav-text {
+              font-size: 1.2rem;
+              font-weight: bold;
+              color: #FFF;
+              padding-top: 10px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              .fold-sign {
+                padding-left: 5px;
+                display: inline-block;
+                .fold-sign-element {
+                  transition: transform 300ms ease-in-out;
+                  transform-origin: center;
+                  transform: rotate(0deg);  
+                }
+              }
+              border-bottom: 3px solid rgb(0 0 0 / 0%);
+            }
+            ol {
+              background-color: #0352ac;
+              @include purity;
+              > li {
+                white-space: nowrap;
+                transition: height 200ms ease-in-out;
+                height: 0em;
+                box-sizing: border-box;
+                overflow: hidden;
+                .nav-text {
+                  font-size: 18px;
+                  font-weight: normal;
+                }
+              }
+            }
+            a {
+              text-decoration: none;
+            }
+            &.show {
+              .fold-sign {
+                .fold-sign-element {
+                  transform: rotate(-180deg);
+                }
+              }
+              ol {
+                li {
+                  height: 3em;
+                }
+              }
+            }
+          }
+        }
+      }
+      @include screen-pad {
+        height: 113px;
+        background: #014592;
+        box-shadow: 2px 3px 15px 0px rgb(0 0 0 / 65%);
+        padding: 0 1em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        nav {
+          ul {
+            display: flex;
+            flex-direction: row;
+            li {
+              &:hover {
+                >a .nav-text {
+                  border-bottom-color: #FFF;
+                }
+              }
+              ol {
+                position: absolute;
+                left: 0;
+                top: 4rem;
+              }
+            }
+          }
+        }
+      }
+      @include screen-pc {
+        padding: 0 6rem;
+      }
+      @include screen-mobile {
+        background-color: #014592;
+        h1 {
+          text-align: center;
+        }
+        nav {
+          ul {
+            li {
+              display: block;
+            }
+          }
+        }
+      }
+  
+    }
+    .search {
+      .search-tool {
+        width: 40em;
+        margin: 0 auto;
+        padding: 1em;
+      }
+    }
+  }
+
+  > main {
+    flex-grow: 1;
+    padding: 2rem  0;
+    @include screen-pad {
+      display: flex;
+      flex-direction: row;
+      min-width: $width-pad;
+      max-width: $width-pc;  
+    }
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    aside {
+      padding-right: 1em;
+      h2 {
+        white-space: nowrap;
+      }
+      ul {
+        border-bottom: #000 solid 2px;
+        @include purity;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        li {
+          a {
+            white-space: nowrap;
+            color: $font-color-default;
+          }
+        }
+      }
+    }
+  }
+  > footer {
+    background: #02448f;
+    padding: 1rem 2rem;
+    .links {
+      ul {
+        margin-block-start: 0;
+        margin-block-end: 0;
+        list-style: none;
+        li {
+          display: inline;
+          color: #FFF;
+          font-size: 2rem;
+          padding-left: 20px;
+       }
+      }
+      text-align: right;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #FFF;
+    }
+    .copyright {
+      display: flex;
+      flex-direction: row;
+      .logo {
+        margin-right: 2em;
+      }
+      p {
+        color: #FFF;
+        a {
+          color: #FFF;
+        }
+      }
+    }
+  }
+}
+
+@include screen-mobile {
+  .layout {
+    > header {
+      h1 {
+        font-size: 20px;
+      }
+    }
+  }
+}

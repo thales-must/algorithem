@@ -1,0 +1,22 @@
+@import "./mixin";
+
+.create, .login, .me {
+  width: 100%;
+  background: #fff;
+  ul {
+    @include purity;
+    li {
+      display: inline;
+    }
+  }
+  .err {
+    color: red;
+  }
+}
+.me {
+  form {
+    textarea {
+      width: 100%;
+    }
+  }
+}
