@@ -11,6 +11,9 @@ export class Heap {
   getStep() {
     return [...this._step];
   }
+  getArr() {
+    return [...this._arr];
+  }
   drawTree(index:number, x:number = 0, y:number = 0, offsetX:number = 0, parentX:number = 0, parentY:number = 0) {
     if(index < this._arr.length) {
       // this._step.push(this._arr[index]);

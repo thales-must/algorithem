@@ -18,14 +18,21 @@
         Init
       </v-card-title>
       <v-card-actions>
-        <v-btn variant="outlined" @click.stop="onStart">start</v-btn>
+        <v-btn v-if="origin.length>0" type="button" variant="outlined" @click.stop="onStart">start</v-btn>
       </v-card-actions>
       <v-card-text>
+        <p>Origin Array</p>
         <v-chip-group>
           <v-chip v-for="item in origin" :key="item" :text="String(item)"></v-chip>
         </v-chip-group>
+        <p>Init Tree</p>
         <heap-tree :step="initStep" animate></heap-tree>
+        <p>Build Tree</p>
         <heap-tree :step="step"></heap-tree>
+        <p>Final Array</p>
+        <v-chip-group ref="currentItem">
+          <v-chip v-for="item in current" :key="item" :text="String(item)"></v-chip>
+        </v-chip-group>
       </v-card-text>
     </v-card>
 
@@ -39,14 +46,18 @@ import { computed, onMounted, ref } from 'vue';
 const store = useHeap();
 const form = computed(() => store.form);
 const origin = computed(() => store.origin);
+const current = computed(() => store.current);
 const step = computed(() => store.step);
 const initStep = computed(() => store.initStep);
+const currentItem:any = ref();
 
 function onSubmit() {
   store.input(form.value.str);
 }
 function onStart() {
   store.start();
+  console.log(currentItem.value);
+  currentItem.value.$el.scrollIntoView({ behavior: 'smooth' });
 }
 
 onMounted(() => {

@@ -12,6 +12,7 @@ const useHeap = defineStore({
   state: () => ({
     _form: <IForm>{}, // 提交字符串
     _origin: <number[]>[], // 原始数据
+    _current: <number[]>[], // 当前数据
     _initStep: <any[]>[], // 初始化流程
     _step: <IAction[]>[] // 流程
   }),
@@ -20,16 +21,22 @@ const useHeap = defineStore({
       return this._form;
     },
     /**
-     * 文章标题
+     * 原始数据
      */
     origin():number[] {
       return this._origin;
     },
+    current():number[] {
+      return this._current;
+    },
+    /**
+     * 初始化流程
+     */
     initStep():any[] {
       return this._initStep;
     },
     /**
-     * 文章内容
+     * 流程
      */
     step():IAction[] {
       return this._step;
@@ -55,23 +62,17 @@ const useHeap = defineStore({
     start() {
       const h = new Heap([...this._origin]);
       h.build();
-      h.sort();
       h.init();
       this._step = h.getStep();
-      console.log(h._arr);
-
-      // h.build();
-      // console.log(this._origin);
-      // console.log(h._arr);
-      // h.sort();
-      // console.log(h._arr);
+      h.sort();
+      this._current = h.getArr();
     },
     /**
      * 初始化
      */
     init() {
       this._form = {
-        str: '16,14,10,8,7,9,3,2,4,1'
+        str: '4,1,2,3,16,9,10,14,8,7'
       }
     }
     
