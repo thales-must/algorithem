@@ -1,7 +1,11 @@
 \documentclass{article}
+\usepackage[top=1cm,left=1cm,right=1.5cm,bottom=2cm]{geometry}
+\usepackage[utf8]{inputenc}
 \title{Algorithm Homework}
 \author{Tai Jiang}
 \date{October 2023}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{color}
@@ -345,21 +349,82 @@ So, the expected value of the sum of n dice is (n/6).
     \subparagraph{Exercise}6.5-9
     \subparagraph{Page}166
   \paragraph{Answer}:
-  Answer
+  
+  \begin{enumerate}
+    \item Create a min-heap and initialize it with the first element from each of the k sorted lists, along with an index indicating the list it came from. The heap will keep track of the smallest element among these k elements. The index is important for knowing which list the element belongs to.
+    \item Initialize an empty result list to store the sorted elements.
+    \item Repeat the following steps until the min-heap is empty:
+    
+    \begin{enumerate}
+      \item Extract the minimum element (the smallest among the k elements) from the min-heap. This element came from one of the input lists.
+      \item Add this element to the result list.
+      \item Retrieve the next element from the same input list (the one we just extracted from) and add it to the min-heap. If there are no more elements in that list, do nothing.
+    \end{enumerate}
+    \item Continue these steps until the min-heap is empty. The result list will be the merged, sorted list.
+  \end{enumerate}
+  
 
   \section{Use the substitution method to prove that the recurrence $T (n) = T(n-1) + \Theta(n)$ has the solution $T(n) = \Theta(n^2)$, as claimed at the beginning of Section 7.2.}
   \paragraph{Origin}:
     \subparagraph{Exercise}7.2-1
     \subparagraph{Page}178
   \paragraph{Answer}:
-  Answer
+  
+
+To prove that the recurrence $T(n) = T(n - 1) + \Theta(n)$ has the solution $T(n) = \Theta(n^2)$ using the substitution method, we'll first make an educated guess and then use mathematical induction to prove it.
+
+Guess: $T(n) = \Theta(n^2)$
+
+Inductive Hypothesis: We assume that $T(k) = \Theta(k^2)$ for all k < n, where n is a positive integer.
+
+Now, we will prove that $T(n) = \Theta(n^2)$ based on this assumption.
+
+$T(n) = T(n - 1) + \Theta(n)$
+
+By our inductive hypothesis, $T(n - 1) = \Theta((n - 1)^2)$, which we can write as $T(n - 1) = \Theta(n^2 - 2n + 1)$.
+
+Now, let's substitute this into the original recurrence:
+
+$T(n) = \Theta(n^2 - 2n + 1) + \Theta(n)$
+
+Since $\Theta(n^2)$ dominates $\Theta(-2n + 1)$ and $\Theta(n)$ in terms of growth rates, we can drop the lower-order terms and constants, as they won't affect the asymptotic behavior:
+
+$T(n) = \Theta(n^2)$
+
+So, we've shown that for n, $T(n) = \Theta(n^2)$, assuming $T(k) = \Theta(k^2)$ for all k < n. This completes the proof by induction.
+
+Therefore, the solution to the recurrence $T(n) = T(n - 1) + \Theta(n) is T(n) = \Theta(n^2)$.
 
   \section{Show that the running time of QUICKSORT is $\Theta(n ^ 2)$ when the array A contains distinct elements and is sorted in decreasing order.}
   \paragraph{Origin}:
     \subparagraph{Exercise}7.2-3
     \subparagraph{Page}178
   \paragraph{Answer}:
-  Answer
+  
+To show that the running time of QUICKSORT is $\Theta(n^2)$ when the array A contains distinct elements and is sorted in decreasing order, we can analyze the worst-case behavior of the algorithm. In this specific scenario, the worst-case behavior occurs when the pivot selection strategy consistently selects the smallest or largest element as the pivot, leading to unbalanced partitioning.
+
+Here's a step-by-step analysis:
+
+\begin{enumerate}
+  \item In QUICKSORT, a pivot element is chosen, and the array is partitioned into two subarrays: elements less than the pivot and elements greater than the pivot.
+
+  \item In the case where the array is already sorted in decreasing order, if the pivot selection strategy consistently chooses the largest element as the pivot, then one partition will contain n - 1 elements, and the other partition will contain only 1 element. This results in an unbalanced partition.
+  
+  \item Consequently, the algorithm makes n - 1 recursive calls to sort the subarray with n - 1 elements and only 1 recursive call to sort the subarray with 1 element.
+  
+  \item In the next level of recursion, the same situation occurs. The larger partition is further divided into two subarrays, one with n - 2 elements and the other with 1 element, and so on.
+  
+  \item The recursive calls continue, each time decreasing the size of the larger partition by 1, until the entire array is sorted.
+  
+  \item The total number of recursive calls made in this scenario is $1 + 2 + 3 + ... + (n - 1)$, which is a sum of the first n - 1 natural numbers. This sum is given by (n - 1)(n)/2.
+\end{enumerate}
+
+The number of comparisons made during each level of recursion is proportional to the size of the partition. In this worst-case scenario, the partition sizes are unbalanced, with one partition containing only 1 element. Therefore, the total number of comparisons is also proportional to (n - 1)(n)/2.
+
+Asymptotically, we can conclude that the running time of QUICKSORT in this worst-case scenario, where the array is sorted in decreasing order, is $\Theta(n^2)$.
+
+This demonstrates that when the array contains distinct elements and is sorted in decreasing order, the worst-case running time of QUICKSORT is $\Theta(n^2)$.
+
 
   \section{Stack depth for quicksort}
   \paragraph{Origin}:
@@ -388,6 +453,73 @@ So, the expected value of the sum of n dice is (n/6).
     \item[b] Describe a scenario in which TAIL-RECURSIVE-QUICKSORT's stack depth is $\Theta(n)$ on an n-element input array.
     \item[c] Modify the code for TAIL-RECURSIVE-QUICKSORT so that the worst-case stack depth is $\Theta(\lg n)$. Maintain the $O(n \lg n)$ expected running time of the algorithm.
   \end{enumerate}
+
+  \section{Describe an algorithm that, given n integers in the range 0 to k, preprocesses its input and then answers any query about how many of the n integers fall into a range [a...b] in O(1) time. Your algorithm should use $\Theta(n+k)$ preprocessing time.}
+  \paragraph{Origin}:
+    \subparagraph{Exercise}8.2-4
+    \subparagraph{Page}197
+  \paragraph{Answer}:
+
+
+To solve the problem of preprocessing n integers in the range 0 to k and answering queries about how many of the n integers fall into a given range [a...b] in O(1) time, you can use a technique called "prefix sum" or "cumulative sum" along with some preprocessing. Here's the algorithm:
+
+\begin{enumerate}
+  \item Create an array \textbf{counts} of size k + 1, initially filled with all zeros. This array will be used for preprocessing.
+  \item Preprocessing ($\Theta(n)$ time):
+  \begin{itemize}
+    \item For each integer x in the input list, increment \textbf{counts[x]} by 1. This step will count the occurrences of each integer in the range 0 to k.
+    \item Next, compute the cumulative sum array \textbf{cumulative} from the \textbf{counts} array. Initialize \textbf{cumulative[0]} with \textbf{counts[0]}, and for each i from 1 to k, set \textbf{cumulative[i] = cumulative[i-1] + counts[i]}. This step helps us obtain the cumulative count of integers less than or equal to i.
+  \end{itemize}
+  \item Query (O(1) time):
+  \begin{itemize}
+    \item To answer a query about how many integers fall into the range [a...b], use the cumulative sum array: \textbf{result = cumulative[b] - cumulative[a-1]}. This is a constant-time operation as you only need to perform two array lookups and subtraction.
+  \end{itemize}
+  \item This algorithm has a preprocessing time of $\Theta(n + k)$ and can answer queries in O(1) time, making it efficient for this specific problem. It effectively utilizes the cumulative sum array to provide quick answers to range count queries without reevaluating the counts for each query.
+\end{enumerate}
+
+\section{Show that the second smallest of n elements can be found with $n+\lceil \lg n\rceil -2$ comparisons in the worst case. (Hint: Also find the smallest element.)}
+\paragraph{Origin}:
+  \subparagraph{Exercise}9.1-1
+  \subparagraph{Page}215
+\paragraph{Answer}:
+
+
+To find the second smallest of n elements and the smallest element using ($n + \lceil \lg n \rceil - 2$) comparisons in the worst case, you can use a modified version of the "tournament" method. This approach requires a total of $n + \lceil \lg n \rceil - 2$ comparisons in the worst case.
+
+Here's how it works:
+
+\begin{enumerate}
+  \item Divide the n elements into pairs. Compare each element in each pair and keep track of the smaller element in each pair. This step requires n/2 comparisons.
+  \item Continue dividing the winners of each pair into pairs and comparing them until you have just one element left. This will take $\lceil \lg n \rceil - 1$ more rounds of comparisons.
+  \item At the end of this process, you will have the smallest element (found after n/2 comparisons) and $\lceil \lg n\rceil - 1$ other elements.
+  \item Compare these $\lceil \lg n\rceil - 1$ elements to find the second smallest element. This step requires $\lceil \lg n\rceil - 1$ comparisons.
+
+\end{enumerate}
+
+The total number of comparisons required is $(n/2) + (\lceil \lg n \rceil - 1) = n/2 + \lceil \lg n \rceil - 1$, which is equivalent to $n + \lceil \lg n \rceil - 2$. Therefore, you can find the second smallest element with ($n + \lceil \lg n \rceil - 2$) comparisons in the worst case.
+
+\section{In the algorithm SELECT, the input elements are divided into groups of 5. Will the algorithm work in linear time if they are divided into groups of 7? Argue that SELECT does not run in linear time if groups of 3 are used.}
+\paragraph{Origin}:
+  \subparagraph{Exercise}9.3-1
+  \subparagraph{Page}223
+\paragraph{Answer}:
+Answer
+
+\section{Professor Olay is consulting for an oil company, which is planning a large pipeline running east to west through an oil field of n wells. The company wants to connect a spur pipeline from each well directly to the main pipeline along a shortest route (either north or south), as shown in Figure \ref{fig:oilcompany}. Given the x-andy-coordinates of the wells, how should the professor pick the optimal location of the main pipeline, which would be the one that minimizes the total length of the spurs? Show how to determine the optimal location in linear time.}
+
+\begin{figure}
+  \includegraphics{oilcompany.png}
+  \caption{Professor Olay needs to determine the position of the east-west oil pipeline that minimizes the total length of the north-south spurs.}
+  \label{fig:oilcompany}
+\end{figure}
+
+\paragraph{Origin}:
+  \subparagraph{Exercise}9.3-9
+  \subparagraph{Page}223
+\paragraph{Answer}:
+
+
+Answer
 
 
 \end{document}
