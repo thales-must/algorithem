@@ -862,4 +862,267 @@ Now, the question becomes whether there is a subgraph of $G_2$ that is isomorphi
 
 Since we have shown that subgraph isomorphism is both in NP and NP-hard, it follows that the subgraph isomorphism problem is NP-complete.
 
+
+\section{More Problems added to form the examination}
+
+\subsection{Part A}
+
+\subsubsection{Suppose that there are $n$ tasks denoted as $T_1, T_2, …, T_n$ to be performed. All the tasks require two different resources denoted as $R_1$ and $R_2$ to process them in a serial way. The time for processing $T_i$ by resources $R_1$ and $R_2$ is $Ai$ and $B_i$, respectively. The problem is to sequence these $n$ tasks such that the time for completing all the tasks is minimized.}
+
+\paragraph{Answer}:
+
+To minimize the time for completing all the tasks, the optimal sequence of tasks needs to be determined, considering the processing times for resources $R_1$ and $R_2$.
+
+To solve this problem, a scheduling algorithm can be employed to find the optimal sequence of tasks. This type of problem belongs to the domain of job scheduling, specifically in the context of resource-constrained systems.
+
+One approach to solving this problem involves the following steps:
+
+\begin{enumerate}
+  \item List all the tasks and their processing times for resources $R_1$ and $R_2$ ($A_i$ and $B_i$).
+  \item Calculate the total processing time for each task, which is the sum of its processing times for $R_1$ and $R_2$ ($A_i$ + $B_i$).
+  \item Start with an empty schedule.
+  \item While there are remaining tasks:
+  \begin{enumerate}
+    \item Select the task with the shortest total processing time.
+    \item Assign the task to the resource with the earliest availability, taking into account the sequential processing requirement.
+    \item Update the availability of the selected resource.
+    \item Remove the task from the list of remaining tasks.
+  \end{enumerate}
+\end{enumerate}
+
+By iterating through these steps, the algorithm aims to minimize the overall completion time by sequencing the tasks in an optimal manner, considering the processing requirements and resource availability.
+
+
+\begin{figure}[h!]
+  \includegraphics{state.png}
+  \caption{State presentation of tasks for resource assignment}
+  \label{fig:state}
+\end{figure}
+
+
+\subsubsection{In many systems (such as computer systems, Manufacturing systems), tasks need to be assigned to resources to complete multiple tasks. Often, a task can be completed by a number of steps which should be done in a sequential way. Such a process can be described by a digraph as shown in Fig. \ref{fig:state}. In this figure, resource $r_i$ is denoted by a circle. A dot in a circle representing resource $r_i$ indicates that some step of a task is being processed by resource $r_i$. After its completion at $r_i$, the task should go to the next resource along one of the arcs that leave from $r_i$. When an arc leaves from $r_i$ and goes to no resource, it indicates that the task is completed. In this process, tasks compete for limited resource and deadlock can occur. Please develop a condition under which deadlock occurs and present an algorithm to detect deadlocks. Is there an algorithm to do so with polynomial complexity? Give an example to show the results.}
+
+Deadlock in task assignment and resource allocation systems can occur when tasks compete for limited resources, leading to a situation where none of the competing tasks can proceed, and they are effectively stuck. A deadlock can occur under the following condition:
+
+\paragraph{Condition for Deadlock:}
+
+Circular Wait: A circular wait occurs when there is a circular chain of two or more tasks, each of which is waiting for a resource that is held by another task in the chain.
+
+\paragraph{Algorithm to Detect Deadlocks:}
+One widely used algorithm to detect deadlocks in resource allocation systems is the Banker's Algorithm, which can determine whether there is a safe sequence of resource allocations that will allow all tasks to complete. The Banker's Algorithm operates by simulating resource allocation to tasks and evaluating whether a safe sequence exists. If a safe sequence cannot be found, it indicates the potential for deadlock.
+
+\paragraph{Banker's Algorithm Steps:}
+\begin{enumerate}
+  \item Initialize:
+  \begin{enumerate}
+    \item Work: an array of length equal to the number of resources, initialized with the available resources.
+    \item Finish: an array of length equal to the number of tasks, initialized to false.
+  \end{enumerate}
+  \item Search for an index i such that all of the following are true:
+  \begin{enumerate}
+    \item $Finish[i]$ is false.
+    \item $Need[i] \leq Work$, where $Need[i]$ represents the additional resources required by task $i$ to complete.
+  \end{enumerate}
+  \item If such an index i is found, simulate the allocation of resources to task i, update the arrays Work and Finish, and repeat the search. If no such index is found, the system is in an unsafe state and may be deadlocked.
+\end{enumerate}
+
+Example:
+
+\paragraph{Consider a scenario with three tasks ($T_1$, $T_2$, $T_3$) and three resources ($R_1$, $R_2$, $R_3$) with the following data:}
+
+\begin{itemize}
+  \item Initial Available Resources: $R_1$ = 1, $R_2$ = 1, $R_3$ = 2
+  \item Maximum Resource Need for Tasks:
+  \begin{itemize}
+    \item $T_1: R_1 = 1, R_2 = 1, R_3 = 2$
+    \item $T_2: R_1 = 1, R_2 = 2, R_3 = 1$
+    \item $T_3: R_1 = 2, R_2 = 1, R_3 = 1$
+  \end{itemize}
+  \item Currently Allocated Resources:
+  \begin{itemize}
+    \item $T_1: R_1 = 1, R_2 = 1, R_3 = 1$
+    \item $T_2: R_1 = 0, R_2 = 1, R_3 = 0$
+    \item $T_3: R_1 = 0, R_2 = 0, R_3 = 1$
+  \end{itemize}
+\end{itemize}
+
+Using the Banker's Algorithm, perform the resource allocation simulation and determine whether a safe sequence exists. This will demonstrate the detection of potential deadlocks and the notion of a safe sequence.
+
+While the Banker's Algorithm is effective in detecting potential deadlocks, it should be noted that finding a safe sequence in an arbitrary resource allocation system is an NP-hard problem. Therefore, in the general case, there is no algorithm with polynomial complexity to detect deadlocks in resource allocation systems.  
+
+
+\subsubsection{A lane reservation problem may be described as follows. }
+
+Consider a directed connected network $G = (V, A)$, where $V = \{0, 1, …, n\}$ is the set of nodes and $A = \{(i, j)\}, i, j \in V$ is the set of arcs. The special node 0 is the start node from which all the people or materials to be delivered. Therefore, $V_0 = \{1, 2, …, n\}$ is the set of nodes except 0. Furthermore, $E \subset  V_0$ is a set of special nodes in which each node is the destination node of a transportation mission. In this problem, for a transportation mission, a vehicle starts from node 0, goes through some of the nodes and finally gets to its destination node. For each mission, there is a time constraint $P_C$. To meet the time constraint, one lane on a road may be reserved for the special use. It is assumed that there are at least two lanes on an arc, otherwise it is meaningless to reserve a lane for a special use. Let $T_{ij}$, $TS_{ij}$, and $M_{ij}$ be the travel time with no lane reserved, travel time on a reserved lane, and the number of lanes on road $(i, j)$, respectively. Each arc $(i, j)$ in the network incurs a cost $C_{ij}$ if there is a reserved lane on $(i, j)$. Costs of reserved lanes to the current traffic are very difficult to estimate quantitatively. To the best of our knowledge, there is no such estimation in the literatures. We let $C_{ij} = T_{ij}\frac{M_{ij}}{M_{ij}-1} - T_{ij} = \frac{T_{ij}}{M_{ij}-1}$  be a cost function on road $(i, j)$ if a lane is reserved. The objective of the problem is to find the minimum cost of reserved lanes. Then the problem can be formulated as an integer linear programming as follows. The notation used in the model is given as:
+
+\paragraph{Parameters:}
+
+\begin{itemize}
+  \item $V \text{ set of nodes noted from } 0 \text{ to } n \text{ where } 0 \text{ is the start node}$
+  \item $V_0 \text{ set of nodes except } 0, V_0 = V - {0}$
+  \item $E \text{ set of destination nodes}, E \subset V_0$
+  \item $A \text{ set of arcs}$
+  \item $(i, j) \text{ directed arc from node } i \text{ to node } j$
+  \item $P_C \text{ travel time constraint from } 0 \text{ to each destination node}$
+  \item $T_{ij} \text{ travel time without reserved lane from node } i \text{ to node } j$
+  \item $TS_{ij} \text{ travel time on the reserved lane from node } i \text{ to node } j$
+  \item $M_{ij} \text{ the number of lanes from node } i \text{ to node } j$
+  \item $C_{ij} \text{ cost of a reserved lane from node } i \text{ to node } j, C_{ij} = T_{ij}\frac{M_{ij}}{M_{ij}-1} - T_{ij} = \frac{T_{ij}}{M_{ij}-1}$
+\end{itemize}
+
+\paragraph{Variables:}
+
+$$x_{ijk} \text{ binary variable representing if there is a reserved lane from node } i \text{ to node } j \text{ for transportation mission } k$$
+
+\begin{equation*}
+  \begin{aligned}
+    x_{ijk}&=
+    \left\{
+      \begin{array}{ll}
+        1 \text{ if there is a reserved lane on arc}(i,j)\in A \text{ and the trip from} 0 \text{ to } k \in E \text{ passes the arc}\\
+        0 \text{ otherwise}
+      \end{array} 
+    \right.\\
+      y_{ijk}&=
+    \left\{
+      \begin{array}{ll}
+        1 \text{ if the trip from} 0 \text{ to } k \in E \text{ passes } (i, j) \in A\\
+        0 \text{ otherwise}
+      \end{array} 
+    \right.\\
+    z_{ij}&=
+    \left\{
+      \begin{array}{ll}
+        1 \text{ if there is a reserved lane on arc } (i, j) \in A\\
+        0 \text{ otherwise}
+      \end{array} 
+    \right.
+  \end{aligned}
+\end{equation*}
+
+Then, the problem can be formulated as
+
+\begin{equation*}
+  \begin{aligned}
+    &Minimize \quad  \sum_{(i,j)\in A}C_{i,j}z_{ij} &\text{(1)} \\
+    \text{subject to:}\\
+    &\sum_{i \in V_0} y_{0ik} = 1, k \in E &\text{(2)}\\
+    &\sum_{i \in V} y_{ijk} = \sum_{i \in V} y_{jik}, j \in E - \{k\}, k \in E &\text{(3)}\\
+    &x_{ijk} \leq y_{ijk}, (i,j) \in A, k \in E &\text{(4)}\\
+    &x_{ijk} \leq z_{ij}, (i,j) \in A, k \in E &\text{(5)}\\
+    &\sum_{(i, j) \in A}(T_{ij}(y_{ijk}-x_{ijk}) + TS_{ij}x_{ijk}) \leq P_C, k \in E &\text{(6)}\\
+    &x_{ijk}, y_{ijk} \in \{0, 1\}, (i,j) \in A, k \in E &\text{(7)}\\
+    &z_{ij} \in \{0, 1\}, (i,j) \in A &\text{(8)}
+  \end{aligned}
+\end{equation*}
+
+In the lane reservation problem, for every node $k \in E$, there is at least a transportation mission from node $0$ to $k$. It implies that there must be exactly one path from node $0$ to each node $k \in E$, such that the transportation time constraint is satisfied. It means that there a path from node $0$ to each destination node. Constraints (2) and (3) ensure that such a path exists. Constraint (4) guarantees that there may be a reserved lane on arc $(i, j)$ for the venue k only if there is a trip from 0 to k passes by $(i, j)$. Constraint (5) guarantees that there may be a reserved lane on arc $(i, j)$ for venue k only if there is a reserved lane on arc $(i, j)$. Constraints (6) assure that travel time of the path from 0 to k does not exceed $P_C$.
+
+Show that the problem is NP-hard. (Hint: reduce from the knapsack problem)
+
+
+\paragraph{Answer}:
+
+
+To show that the lane reservation problem is NP-hard, we will reduce it from the NP-hard Knapsack problem. The Knapsack problem is known to be NP-hard, and we will show that if we can solve the lane reservation problem in polynomial time, then we can solve the Knapsack problem in polynomial time as well.
+
+\textbf{Reduction from Knapsack to Lane Reservation:}
+
+Given an instance of the Knapsack problem with a set of items \(I\) and their weights \(w_i\) and values \(v_i\), we want to determine whether there exists a subset \(S \subseteq I\) such that the total weight of the selected items is less than or equal to a given capacity \(W\) and the total value is maximized.
+
+\textbf{Constructing the Lane Reservation Instance:}
+
+\begin{enumerate}
+  \item Nodes:
+
+  Create nodes in the lane reservation instance corresponding to the items in the Knapsack instance. Denote these nodes as \(v_i\) for each item \(i \in I\).
+
+  \item Arcs:
+
+  Create directed arcs between all nodes. For each pair of nodes \(v_i\) and \(v_j\), create an arc \((v_i, v_j)\).
+
+  \item Weights and Values:
+  \begin{itemize}
+    \item Set the weight of arc \((v_i, v_j)\) as \(w_{ij} = w_i\).
+    \item Set the value of arc \((v_i, v_j)\) as \(v_{ij} = v_i\).
+  \end{itemize}
+
+  \item Destination Nodes:
+
+  Set \(E = \{v_{\text{sink}}\}\), where \(v_{\text{sink}}\) is a special destination node.
+
+  \item Time Constraint:
+
+  Set \(P_C = W\), the capacity of the Knapsack.
+\end{enumerate}
+
+\textbf{Objective:}
+
+The goal is to minimize the cost of reserved lanes in the lane reservation problem. The cost function \(C_{ij} = \frac{T_{ij}}{M_{ij}-1}\) encourages the algorithm to reserve lanes only when the travel time is significantly reduced.
+
+\textbf{Analysis:}
+
+\begin{enumerate}
+  \item If there exists a solution to the Knapsack problem, meaning there is a subset \(S \subseteq I\) such that the total weight is less than or equal to \(W\), then there exists a solution to the lane reservation problem.
+  \begin{itemize}
+    \item Set \(x_{ijv_{\text{sink}}} = 1\) for each \(i \in S\), meaning that a lane is reserved for each item in the Knapsack subset.
+    
+    \item The constraints guarantee that the total weight of the reserved lanes is less than or equal to \(W\).
+    
+    \item The objective function minimizes the cost of reserved lanes, encouraging the selection of lanes associated with valuable items.
+  \end{itemize}
+  \item If there exists a solution to the lane reservation problem, then there exists a solution to the Knapsack problem.
+  \begin{itemize}
+    \item The reserved lanes correspond to the selected items in the Knapsack problem.
+    
+    \item The constraints ensure that the total weight of the reserved lanes does not exceed \(W\).
+    
+    \item The objective function minimizes the cost, encouraging the selection of lanes associated with valuable items.
+  \end{itemize}
+\end{enumerate}
+
+
+\textbf{Conclusion:}
+
+This reduction demonstrates that the lane reservation problem is at least as hard as the Knapsack problem, which is NP-hard. Therefore, the lane reservation problem is also NP-hard.
+
+\subsubsection{Nowadays, AI techniques are widely used to solve various complex problems. Are such techniques applicable to complex optimization problems in a computationally efficient way? If so, please state the situations where they can be applied. You can use some examples to show it.}
+
+\paragraph{Answer}:
+
+
+AI techniques, specifically machine learning and evolutionary algorithms, have been successfully applied in solving various complex optimization problems in a computationally efficient way. These techniques have been used in a wide range of fields, including engineering, economics, finance, and healthcare.
+
+One example of the application of AI techniques is in the field of scheduling and routing problems. These problems involve finding the best sequence of tasks or routes for a given set of resources and constraints. For example, in the transportation industry, AI techniques have been used to optimize routes for delivery trucks, reducing costs and improving efficiency.
+
+Another example is in the field of financial portfolio optimization, where AI techniques are used to find the optimal allocation of assets for a given risk and return profile. This allows investors to make informed decisions and maximize their returns.
+
+In healthcare, AI techniques are used to optimize treatment plans for patients, taking into account individual patient data and medical constraints. This has the potential to improve patient outcomes and reduce healthcare costs.
+
+Overall, AI techniques are applicable to complex optimization problems in a computationally efficient way. They can be applied in situations where there is a large amount of data, complex relationships between variables, and a need for optimization.
+
+\subsection{Part B}
+
+\subsubsection{With this class taken, write an essay to summarize what you have learned from it and state if the methods are usable for your research.}
+
+\paragraph{Answer}:
+
+Throughout this class, I have learned about different types of algorithms and their applications in solving various problems. These include divide and conquer algorithms, greedy algorithms, dynamic programming, and graph algorithms.
+
+Divide and conquer algorithms break down a problem into smaller subproblems, solve them recursively, and then combine the solutions to the subproblems to find the solution to the original problem. These algorithms are useful for solving problems such as sorting, searching, and binary tree traversal.
+
+Greedy algorithms make locally optimal choices at each step, with the hope that this will lead to a globally optimal solution. They are often used in optimization problems, such as the knapsack problem and shortest path problems.
+
+Dynamic programming is a technique for solving problems by breaking them down into smaller subproblems and storing the solutions to those subproblems. This allows for more efficient computation of the solutions to larger problems.
+
+Graph algorithms are used to solve problems on graphs, such as finding the shortest path between two nodes or detecting cycles in a graph. They are widely used in computer networking, transportation, and social network analysis.
+
+In conclusion, this class has provided me with a solid understanding of different algorithms and their applications. I believe that these methods are usable for my research as they can be applied to a wide range of problems and have shown to be effective in finding solutions. Additionally, the use of dynamic programming and graph algorithms can be particularly useful for my research in solving problems with large amounts of data and complex relationships.
+
+\subsubsection{Make comments on this class.}
+
+\paragraph{Answer}:
+
+My suggestion would be to slow down the pace of the course and provide some supplementary materials, such as reference papers, for students to further digest the content outside of class. This could potentially improve the overall learning experience for students as it allows them to have more time to fully understand and apply the concepts taught in class. Additionally, providing reference papers can also enhance the students' understanding by providing real-world examples and applications of the algorithms learned in class.
+
 \end{document}
