@@ -320,30 +320,11 @@ So, the expected value of the sum of n dice is (n/6).
     \subparagraph{Page}160
   \paragraph{Answer}:
 
-  Basic heapsort:
+  The worst-case is sorted in increasing order.
 
-  \begin{enumerate}
-    \item Build a max-heap from the input array.
-    \item Repeatedly remove the maximum element from the heap and place it at the end of the array, shrinking the heap size.
-    \item Repeat step 2 until the heap is empty.
-  \end{enumerate}
+  There are n-1 calls to MAX-HEAPIFY.
 
-  The worst-case occurs when the input array is specially ordered, i.e., the largest element is at the beginning, the second largest is at the second position, and so on.
-
-  Every time we extract the maximum element from the heap (which is always at the root of the heap), we have to perform the following operations:
-
-  \begin{enumerate}
-    \item Swap the maximum element with the last element of the array.
-    \item Restore the heap property, which involves down-heapifying the heap (sifting down the element that was originally at the end of the array, which is the smallest element in the heap)
-  \end{enumerate}
-
-  After the first element is removed, the second-largest element becomes the new root, and the rest of the array is unsorted. We then need to restore the heap property again and again for each element, resulting in a series of down-heapify operations.
-
-  In the worst-case scenario, for each element, we perform a down-heapify operation on a heap of size n, and the number of operations increases as we progress through the array. The first element requires the most operations, the second element requires fewer operations, and so on.
-
-  The total number of operations can be shown to be $\Omega (n \lg n)$ because each down-heapify operation takes $\Omega (\lg n)$ time, and we do this for all n elements in the worst-case scenario.
-
-  Therefore, in the worst-case scenario, HEAPSORT has a lower bound of $\Omega (n \lg n)$, meaning that its worst-case running time is at least proportional to n lg n.
+  $\sum_{i=1}^{n-1} = \lg((n-1)!) = \Theta(n \lg n)$
 
   \section{Give an $O (n \lg k)$-time algorithm to merge k sorted lists into one sorted list, where n is the total number of elements in all the input lists. (Hint: Use a minheap for k-way merging.)}
   \paragraph{Origin}:
@@ -402,30 +383,11 @@ Therefore, the solution to the recurrence $T(n) = T(n - 1) + \Theta(n) is T(n) =
     \subparagraph{Page}178
   \paragraph{Answer}:
   
-To show that the running time of QUICKSORT is $\Theta(n^2)$ when the array A contains distinct elements and is sorted in decreasing order, we can analyze the worst-case behavior of the algorithm. In this specific scenario, the worst-case behavior occurs when the pivot selection strategy consistently selects the smallest or largest element as the pivot, leading to unbalanced partitioning.
+  Because all the elements are greater than the pivot.
 
-Here's a step-by-step analysis:
+  We still get one empty partition and the recurrence is :
 
-\begin{enumerate}
-  \item In QUICKSORT, a pivot element is chosen, and the array is partitioned into two subarrays: elements less than the pivot and elements greater than the pivot.
-
-  \item In the case where the array is already sorted in decreasing order, if the pivot selection strategy consistently chooses the largest element as the pivot, then one partition will contain n - 1 elements, and the other partition will contain only 1 element. This results in an unbalanced partition.
-  
-  \item Consequently, the algorithm makes n - 1 recursive calls to sort the subarray with n - 1 elements and only 1 recursive call to sort the subarray with 1 element.
-  
-  \item In the next level of recursion, the same situation occurs. The larger partition is further divided into two subarrays, one with n - 2 elements and the other with 1 element, and so on.
-  
-  \item The recursive calls continue, each time decreasing the size of the larger partition by 1, until the entire array is sorted.
-  
-  \item The total number of recursive calls made in this scenario is $1 + 2 + 3 + ... + (n - 1)$, which is a sum of the first n - 1 natural numbers. This sum is given by (n - 1)(n)/2.
-\end{enumerate}
-
-The number of comparisons made during each level of recursion is proportional to the size of the partition. In this worst-case scenario, the partition sizes are unbalanced, with one partition containing only 1 element. Therefore, the total number of comparisons is also proportional to (n - 1)(n)/2.
-
-Asymptotically, we can conclude that the running time of QUICKSORT in this worst-case scenario, where the array is sorted in decreasing order, is $\Theta(n^2)$.
-
-This demonstrates that when the array contains distinct elements and is sorted in decreasing order, the worst-case running time of QUICKSORT is $\Theta(n^2)$.
-
+  $T(n) = T(n-1) + T(0) + \Theta(n)= \Theta(n^2)$
 
   \section{Stack depth for quicksort}
 
@@ -1124,5 +1086,9 @@ In conclusion, this class has provided me with a solid understanding of differen
 \paragraph{Answer}:
 
 My suggestion would be to slow down the pace of the course and provide some supplementary materials, such as reference papers, for students to further digest the content outside of class. This could potentially improve the overall learning experience for students as it allows them to have more time to fully understand and apply the concepts taught in class. Additionally, providing reference papers can also enhance the students' understanding by providing real-world examples and applications of the algorithms learned in class.
+
+Below is an example of a heap I made, which should explain the algorithm process more clearly.
+
+https://algorithm.ucasai.com/
 
 \end{document}
